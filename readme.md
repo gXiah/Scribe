@@ -1,5 +1,5 @@
 # PHP Logger
-## /!\ This library is still in development, you can contribute to its development [Here](#) /!\
+### /!\ This library is still in development /!\
 
 Adam Aquesbi *October 09, 2020*
 
