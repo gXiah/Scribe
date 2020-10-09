@@ -1,0 +1,20 @@
+{
+    "name": "gxiah/php_logger",
+    "description": "Php logger for debug, flash messages, external logs, ...",
+    "type": "library",
+    "keywords": ["logs","logging"],
+    "license": "Proprietary",
+    "authors": [
+        {
+            "name": "Adam Aquesbi",
+            "email": "contact@adaquesbi.me"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "App\\":"src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
