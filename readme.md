@@ -1,7 +1,7 @@
 # PHP Logger
 ### /!\ This library is still in development /!\
 
-Adam Aquesbi *October 09, 2020*
+gXiah *October 09, 2020*
 
 This library is designed to provide a set of tools to manage logs and messages in your web projects.
 
