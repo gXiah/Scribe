@@ -9,4 +9,6 @@ In its first version 1.0.(0), you will find basic tools that will allow you to s
 
 ## Installation
 
-- Using Composer : <span style="color:red"><small>Not yet available</small></span>
+- Using Composer : *Not yet available*
+
+## Usage
