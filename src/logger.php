@@ -7,7 +7,10 @@
 
 namespace App;
 
-use App\Internal\JSON\JsonToolkit;
+use App\{
+		Internal\JSON\JsonToolkit,
+		Logs\Text\TextLogsEngine
+	};
 
 define("DS",DIRECTORY_SEPARATOR);
 
@@ -21,6 +24,8 @@ class Logger{
 	// Stores temporary messages that have been sent before the complete initialisation of the Logger
 	private $tmp = array();
 
+	private $txtLogsEngine;
+
 	public function __construct(){
 
 		// Main Configuration file
@@ -28,17 +33,27 @@ class Logger{
 		$this->mainConfig 		= $this->getConfig($this->configFilePath);
 
 
-		
-
+		// Initaliazing the text logs engine
+		$this->txtLogsEngine 	= new TextLogsEngine($this->mainConfig);
+		/**
+		 * @TODO Commit tmp logs
+		 */
+		$this->log($this->tmp);
 
 		// Testing Zone
 		echo "<pre>";
-			print_r($this->mainConfig);
-			print_r($this->tmp);
+			$this->log("Test entry");
+			$this->log(array("entry1","entry2"));
+			$this->log(array("entryWcode",5));
+			$this->log(array());
 		echo "</pre>";
 	}
 
-	public function log($data){}
+	public function log($data){
+
+		$this->txtLogsEngine->newEntry($data);
+		
+	}
 
 	public function flash($data){}
 

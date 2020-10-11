@@ -12,7 +12,7 @@ class JsonToolkit{
 
 
 	/**
-	 * Opens a .json and return its content in an array
+	 * Opens a .json file and returns its content in an array
 	 * @param  string $absolutePath Json file path
 	 * @return array  $data         File data
 	 * @throws \Exception In case file not found
@@ -26,7 +26,7 @@ class JsonToolkit{
 
 		if(!$content){
 			throw new \Exception(
-						"Internal Error while retrieving JSON data from file @$absolutePath.",
+						"[Internal] - Error while retrieving JSON data from file @$absolutePath.",
 						Index::ERR_FILE_NOT_FOUND
 					);
 		}
@@ -34,7 +34,7 @@ class JsonToolkit{
 
 		if(json_last_error() != JSON_ERROR_NONE){
 			throw new \Exception(
-						"JSON Error : ".json_last_error_msg(),
+						"[JSON] - Error : ".json_last_error_msg(),
 						json_last_error());
 			
 		}
