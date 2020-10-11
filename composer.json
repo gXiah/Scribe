@@ -12,7 +12,8 @@
     ],
     "autoload":{
         "psr-4":{
-            "App\\":"src/"
+            "App\\":"src/",
+                "App\\Internal\\JSON\\":  "src/internal/json_utils/"
         }
     },
     "minimum-stability": "stable",
