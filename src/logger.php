@@ -12,6 +12,7 @@ use App\{
 		Logs\Text\TextLogsEngine
 	};
 
+define("ROOT",dirname(__DIR__));
 define("DS",DIRECTORY_SEPARATOR);
 
 

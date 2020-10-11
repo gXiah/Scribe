@@ -7,10 +7,93 @@
 
 namespace App\Logs\Text;
 
+use App\Internal\Keys\Index;
+
 class Indexer{
 
-	public function __construct(){
-		echo "Index ON";
+	const DEFAULT_FOLDER_SUFFIXE = "php-logger-storage";
+
+	private $finalSavingDirectory;
+
+	public function __construct(){}
+
+
+	/**
+	 * Sets up a saving folder for the logs. If the provided folder cannot be used (Doesn't exist, has got the same name as an existing one, ...) then the function create a new folder and returns it's relative path (relative to the root of the library). If the folder exists and can be used, then the function returns it's relative path.
+	 * @param  string $folderPath Saving folder path
+	 * @param  string $root If provided, changes the root for all paths (If we wish to create an external saving folder for example, then the folder root is not the same as the library root)
+	 * @return string $finalPath  Final saving folder path
+	 * @throws Exception If folder cannot be created
+	 */
+	public function setup($folderRelativePath,$root=null){
+
+		if(is_null($root)){
+			$root = ROOT;
+		}else{
+			$root = $root;
+		}
+
+		$absPath = $root.DS.$folderRelativePath;
+		$finalPath = $absPath;
+		$pathinfo = pathinfo($absPath);
+		$basename = (isset($pathinfo["basename"])) ? $pathinfo["basename"] : "";
+
+		$randKey = substr(md5(rand()), 0, 10);
+
+		if(is_dir($absPath)){
+			$content = scandir($absPath);
+
+			// Looking for, and unsetting, the values "." and ".."
+			$current 	= array_search(".", $content);
+			$parent 	= array_search("..", $content);
+			unset($content[$current]);
+			unset($content[$parent]);
+
+			// If a folder with an appended random key exists (eg.: storage-2As53/) ..
+			// ... that has previously been created
+			// Then we choose to use that folder as a saving folder
+			$rand_folder_exists = false; 
+			foreach ($content as $key => $value) {
+				if(preg_match('/'.$basename.'-(.*)/', $value) == 1){
+					$rand_folder_exists = true;
+					$finalPath = $absPath.DS.$content[$key];
+					break;
+				}
+			}
+
+			//If the folder isn't empty, we create a saving subfolder inside it
+			if(!empty($content) && !$rand_folder_exists){
+
+				// Proposed new folder name 
+				$proposedSubFolderPath = $absPath.DS.$basename;
+				
+				// Proposed folder name with random hash appended to it
+				$alternativePath = $proposedSubFolderPath."-$randKey"; 
+
+
+				if(!is_dir($proposedSubFolderPath)){
+					$finalPath = $proposedSubFolderPath;
+				}elseif(!is_dir($alternativePath)){
+					$finalPath = $alternativePath;
+				}else{
+					throw new Exception("[Internal] - Cannot create log folder.", Index::ELEMENT_EXISTS);
+					
+				}
+
+				mkdir($finalPath);
+
+			}
+
+
+		}else{
+			$finalPath = $absPath;
+			mkdir($finalPath);
+		}
+
+		$this->finalSavingDirectory = $finalPath;
+
+		return $finalPath;
+
 	}
 
 }
