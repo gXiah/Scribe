@@ -11,7 +11,7 @@ use App\Internal\Keys\Index;
 
 class Indexer{
 
-	const DEFAULT_FOLDER_SUFFIXE = "php-logger-storage";
+	const DEFAULT_FOLDER_SUFFIXE = "logs-storage";
 
 	private $finalSavingDirectory;
 
@@ -29,12 +29,11 @@ class Indexer{
 
 		if(is_null($root)){
 			$root = ROOT;
-		}else{
-			$root = $root;
 		}
 
 		$absPath = $root.DS.$folderRelativePath;
 		$finalPath = $absPath;
+
 		$pathinfo = pathinfo($absPath);
 		$basename = (isset($pathinfo["basename"])) ? $pathinfo["basename"] : "";
 
@@ -54,7 +53,7 @@ class Indexer{
 			// Then we choose to use that folder as a saving folder
 			$rand_folder_exists = false; 
 			foreach ($content as $key => $value) {
-				if(preg_match('/'.$basename.'-(.*)/', $value) == 1){
+				if(preg_match('/'.self::DEFAULT_FOLDER_SUFFIXE.'-(.*)/', $value) == 1){
 					$rand_folder_exists = true;
 					$finalPath = $absPath.DS.$content[$key];
 					break;
@@ -68,7 +67,7 @@ class Indexer{
 				$proposedSubFolderPath = $absPath.DS.$basename;
 				
 				// Proposed folder name with random hash appended to it
-				$alternativePath = $proposedSubFolderPath."-$randKey"; 
+				$alternativePath = $absPath.DS.self::DEFAULT_FOLDER_SUFFIXE."-$randKey"; 
 
 
 				if(!is_dir($proposedSubFolderPath)){
@@ -84,16 +83,24 @@ class Indexer{
 
 			}
 
-
 		}else{
-			$finalPath = $absPath;
 			mkdir($finalPath);
 		}
 
-		$this->finalSavingDirectory = $finalPath;
 
+		$this->addIndexFile($finalPath);
+
+		$this->finalSavingDirectory = $finalPath;
+		echo $finalPath."<br>";
 		return $finalPath;
 
+	}
+
+	private function addIndexFile($path){
+		/**
+		 * @todo add an index file to the log saving directory
+		 */
+		echo "@todo indexer.php<br>";
 	}
 
 }

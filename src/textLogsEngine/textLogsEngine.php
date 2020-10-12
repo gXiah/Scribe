@@ -35,7 +35,11 @@ class TextLogsEngine{
 		$this->scribe 	= 	new Scribe();
 		$this->indexer 	=	new Indexer();
 
-		$this->internalStorageDirectory = $this->indexer->setup( $this->internalStorageDirectory ); 	
+		try{
+			$this->internalStorageDirectory = $this->indexer->setup( $this->internalStorageDirectory ); 
+		}catch (\Exception $e){
+			$this->newEntry($e->getMessage());
+		}	
 
 	}
 
