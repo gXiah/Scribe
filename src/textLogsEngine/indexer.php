@@ -12,6 +12,7 @@ use App\Internal\Keys\Index;
 class Indexer{
 
 	const DEFAULT_FOLDER_SUFFIXE = "logs-storage";
+	const DEFAULT_INDEX_NAME = ".index.json";
 
 	private $finalSavingDirectory;
 
@@ -52,16 +53,22 @@ class Indexer{
 			// ... that has previously been created
 			// Then we choose to use that folder as a saving folder
 			$rand_folder_exists = false; 
+			$empty = true;
 			foreach ($content as $key => $value) {
+
 				if(preg_match('/'.self::DEFAULT_FOLDER_SUFFIXE.'-(.*)/', $value) == 1){
 					$rand_folder_exists = true;
 					$finalPath = $absPath.DS.$content[$key];
 					break;
 				}
+
+				if($value != self::DEFAULT_INDEX_NAME)
+					$empty = false;
 			}
 
+
 			//If the folder isn't empty, we create a saving subfolder inside it
-			if(!empty($content) && !$rand_folder_exists){
+			if(!$empty && !$rand_folder_exists){
 
 				// Proposed new folder name 
 				$proposedSubFolderPath = $absPath.DS.$basename;
@@ -88,19 +95,34 @@ class Indexer{
 		}
 
 
-		$this->addIndexFile($finalPath);
-
+		$this->updateIndexFile($finalPath);
 		$this->finalSavingDirectory = $finalPath;
-		echo $finalPath."<br>";
+
 		return $finalPath;
 
 	}
 
-	private function addIndexFile($path){
+	private function updateIndexFile($path){
 		/**
 		 * @todo add an index file to the log saving directory
 		 */
-		echo "@todo indexer.php<br>";
+		$indexPath = $path.DS.self::DEFAULT_INDEX_NAME;
+		$indexContent = json_encode( array(
+			"index_path" 	=> 	$indexPath,
+			"create_date"	=> 	date("20y-m-d @ H:m:s"),
+			"sub_indexes"	=>	array()
+		) , JSON_PRETTY_PRINT);
+
+		if(!file_exists($indexPath)){
+			$indexFileHandle = fopen($indexPath,"w+");
+			fwrite($indexFileHandle, $indexContent);
+			fclose($indexFileHandle);
+		}
+			
+		$indexContent = json_decode(file_get_contents($indexPath));
+		print_r($indexContent);
+
+
 	}
 
 }

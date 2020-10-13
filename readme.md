@@ -1,4 +1,4 @@
-# PHP Logger
+# Scribe - a PHP Logger
 ### /!\ This library is still in development /!\
 
 gXiah *October 09, 2020*
