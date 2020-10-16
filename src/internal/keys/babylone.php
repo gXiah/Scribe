@@ -19,6 +19,7 @@ class Babylone{
 		self::FALSE 	=>	array(0,"false","False","no","No")
 	);
 
+	
 	public static function is_equivalent_to($left,$right,$firstTry=true){
 
 		$return = false;
@@ -39,5 +40,10 @@ class Babylone{
 		return $return;
 
 	}
+
+		// ↑ = ↓
+		public static function is($left,$right,$firstTry=true){
+			return self::is_equivalent_to($left,$right,$firstTry);
+		}
 
 }

@@ -1,5 +1,7 @@
 {
+    "index_id": "@todo : manage ids",
     "index_path": "E:\\xampp\\htdocs\\Pro\\composer\\plugins\\php_logger\\storage\\.index.json",
-    "create_date": "2020-10-13 @ 20:10:28",
+    "create_date": "2020-10-15 @ 16:10:19",
+    "layout": "@todo : create layouts management tool",
     "sub_indexes": []
 }

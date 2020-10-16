@@ -26,7 +26,7 @@ class TextLogsEngine{
 		}
 
 
-		// We check the configuration (/config.json) to see in which folder should the logs be saved
+		// We check the configuration (/config.json) to see which folder should the logs be saved in
 		if(isset($mainConfig->internal_storage)){
 			$this->internalStorageDirectory = $mainConfig->internal_storage;
 		}

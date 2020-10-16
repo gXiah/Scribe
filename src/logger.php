@@ -27,10 +27,12 @@ class Logger{
 
 	private $txtLogsEngine;
 
-	public function __construct(){
+	public function __construct($configFileName=null){
 
 		// Main Configuration file
-		$this->configFilePath 	= dirname(__DIR__).DS."config.json";
+		$this->configFilePath 	= (is_null($configFileName)) 
+										? dirname(__DIR__).DS."config.json" 
+										: dirname(__DIR__).DS.$configFileName.".json";
 		$this->mainConfig 		= $this->getConfig($this->configFilePath);
 
 
@@ -42,12 +44,12 @@ class Logger{
 		$this->log($this->tmp);
 
 		// Testing Zone
-		echo "<pre>";
+		
 			$this->log("Test entry");
 			$this->log(array("entry1","entry2"));
 			$this->log(array("entryWcode",5));
 			$this->log(array());
-		echo "</pre>";
+		
 	}
 
 	public function log($data){

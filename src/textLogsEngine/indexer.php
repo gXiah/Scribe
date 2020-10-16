@@ -108,8 +108,10 @@ class Indexer{
 		 */
 		$indexPath = $path.DS.self::DEFAULT_INDEX_NAME;
 		$indexContent = json_encode( array(
+			"index_id"		=>	"@todo : manage ids",
 			"index_path" 	=> 	$indexPath,
 			"create_date"	=> 	date("20y-m-d @ H:m:s"),
+			"layout"		=>	"@todo : create layouts management tool",
 			"sub_indexes"	=>	array()
 		) , JSON_PRETTY_PRINT);
 
