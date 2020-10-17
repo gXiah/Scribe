@@ -34,14 +34,14 @@ class TextLogsEngine{
 		}
 
 		// We now check if the internal storage folder exists and is accessible
-		$this->scribe 	= 	new Scribe();
 		$this->indexer 	=	new Indexer();
-
 		try{
 			$this->internalStorageDirectory = $this->indexer->setup( $this->internalStorageDirectory ); 
 		}catch (\Exception $e){
 			$this->newEntry($e->getMessage());
 		}	
+
+		$this->scribe 	= 	new Scribe( $this->indexer->reachFile() , $this->indexer->sub_path);
 
 	}
 
@@ -111,8 +111,9 @@ class TextLogsEngine{
 	 * @return string $entry Staged entry
 	 */
 	public function stage($entry,$code=0){
-		
-		echo "Staging the entry : $entry with code $code <br>";
+
+		$this->stagedEntries[] = array( strval($entry) , intval($code) );	
+
 	}
 
 
@@ -122,6 +123,13 @@ class TextLogsEngine{
 	public function commit(){
 
 		if($this->storeInternally){
+
+			foreach ($this->stagedEntries as $data) {
+				$message = (isset($data[0])) 	? $data[0] : "NULL";
+				$code = (isset($data[1])) 		? $data[1] : self::DEFAULT_ERROR_CODE;
+
+				$this->scribe->insert([ "message" => $message , "code" => $code ]);
+			}
 
 		}else{
 			// No internal storage authorized
