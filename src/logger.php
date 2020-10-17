@@ -36,10 +36,15 @@ class Logger{
 		$this->mainConfig 		= $this->getConfig($this->configFilePath);
 
 
-		// Initaliazing the text logs engine
+		// Initaliazing the text logs engine (for internal saving)
 		$this->txtLogsEngine 	= new TextLogsEngine($this->mainConfig);
 		/**
-		 * @TODO Commit tmp logs
+		 * @todo Initialize for ext. saving
+		 */
+		$this->tmp[] = ["message",3];
+		$this->tmp[] = ["another msg"];
+		/**
+		 * @todo Commit tmp logs
 		 */
 		$this->log($this->tmp);
 

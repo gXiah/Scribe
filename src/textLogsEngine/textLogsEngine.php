@@ -13,6 +13,8 @@ use App\Logs\Text\{
 
 class TextLogsEngine{
 
+	const DEFAULT_ERROR_CODE = 0;
+
 	private $storeInternally = True;
 	private $internalStorageDirectory;
 
@@ -55,28 +57,50 @@ class TextLogsEngine{
 	 */
 	public function newEntry($data){
 
-		if(is_string($data)){	// String entry
-			$this->stage($data);
-		}else{
-			
-			if(is_array($data) && sizeof($data) == 2 && is_integer($data[1])) { // array(string,int)
-			
-				$this->stage($data[0],$data[1]);
-			
-			}else{// array(str,str,...)
+		$dataSet = array($data);
+		$refined = array();
 
-				foreach ($data as $value) {
 
-					if(is_string($value)){
-						$this->stage($value);
-					}else{
-						$this->stage("[Internal] - Warning: Failed to stage log entry",INDEX::TYPE_ERROR);
-					}
-				}
+		foreach ($dataSet as $key => $value) {
+			
+			if(is_string($value)){	// newEntry("str message")
+
+				$refined[] = array($value , self::DEFAULT_ERROR_CODE);
+
+			}elseif(is_array($value)){ // newEntry( [...] )
+				
+				if(sizeof($value) == 2 && is_int($value[1])){ // newEntry(["message",int_code])
 					
-			}
-			
+					$refined[] = array($value[0] , $value[1]);
 
+				}else{ // newEntry(["msg1" , ["msg2",code2] , "msg3" , ... ])
+
+					foreach ($value as $sub_key => $sub_value) {
+						
+						if(is_string($sub_value)){	// newEntry( ["message1","message2",...] )	
+							
+							$refined[] = array($sub_value , self::DEFAULT_ERROR_CODE);
+							
+						}elseif (is_array($sub_value)) { //newEntry( [ ["msg1",code1] , ["msg2",code2] ] )
+
+							if(isset($sub_value[1])){
+								$refined[] = array($sub_value[0] , $sub_value[1]);
+							}else{
+								$refined[] = array($sub_value[0] , self::DEFAULT_ERROR_CODE);
+							}
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+		foreach ($refined as $value) {
+			$this->stage($value[0] , $value[1]);
 		}
 
 	}
