@@ -41,8 +41,7 @@ class Logger{
 		/**
 		 * @todo Initialize for ext. saving
 		 */
-		// $this->tmp[] = ["message",3];
-		// $this->tmp[] = ["another msg"];
+
 		/**
 		 * @todo Commit tmp logs
 		 */
@@ -50,10 +49,8 @@ class Logger{
 
 		// Testing Zone
 		
-			// $this->log("Test entry");
-			// $this->log(array("entry1","entry2"));
-			// $this->log(array("entryWcode",5));
-			// $this->log(array());
+			$this->log("Log entry number 1, with code 0");
+			$this->log(array("Log entry number 2, with code 6",6));
 
 			$this->txtLogsEngine->commit();
 		

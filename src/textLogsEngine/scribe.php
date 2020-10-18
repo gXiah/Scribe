@@ -39,11 +39,14 @@ class Scribe{
 			$ex_format = explode(";", $format);
 
 			$data["sub_path"] = $this->sub_path;
-			$data["date"] = date("20y-m-d@H-m-s");
+			$data["date"] = date("Y-m-d@H:i:s");
 
 			$formattedLogMessage = "";
 			foreach ($ex_format as $value) {
+
 				$current_variable = str_replace(["{","}"], "", $value);
+				$current_variable = preg_replace('/(.*){(.*)}(.*)/', "$2", $value);
+				
 				$replacement = (isset($data[$current_variable])) ? $data[$current_variable] : "NULL";
 				
 				// Replacing "\" with "\\" for preg_replace()
@@ -51,6 +54,7 @@ class Scribe{
 
 				$formattedLogMessage .= preg_replace('/{(.*)}/',$replacement, $value);
 				$formattedLogMessage .= $this->separator;
+
 			}
 			$formattedLogMessage[-1] = " ";
 
